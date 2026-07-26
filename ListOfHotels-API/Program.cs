@@ -38,6 +38,19 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+
+//********4 فعال‌سازی CORS برای دسترسی از دامنه‌های دیگر (فقط برای توسعه)
+// اجازه می‌ده برنامه‌های دیگر (مثل React یا Vue) به این API وصل بشن.
+
+
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
 //*******2.تنظیمات سفارشی برای Swagger
 builder.Services.AddSwaggerGen(c =>
 c.SwaggerDoc("v1", new OpenApiInfo
@@ -59,6 +72,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//***** 5 ******
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
