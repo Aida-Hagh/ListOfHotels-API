@@ -38,15 +38,24 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+//*******2.تنظیمات سفارشی برای Swagger
+builder.Services.AddSwaggerGen(c =>
+c.SwaggerDoc("v1", new OpenApiInfo
+{
+    Title = "ListOfHotels-API",
+    Version = "v1",
+    Description = "API for managing hotel listings"
+}));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //*******3.تنظیمات سفارشی برای Swagger
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Listing API"));
 }
 
 app.UseHttpsRedirection();
