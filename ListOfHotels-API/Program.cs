@@ -1,9 +1,14 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using ListOfHotels_Data.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddDbContext<AppDbContext>(options=>
+options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 
 //******1- تنظیمات Serilog ********
 #region Serilog Setting
