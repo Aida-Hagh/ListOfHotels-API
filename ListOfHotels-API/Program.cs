@@ -1,4 +1,5 @@
-﻿using ListOfHotels_Core.Interfaces;
+﻿using ListOfHotels_Core.AutoMapper;
+using ListOfHotels_Core.Interfaces;
 using ListOfHotels_Data.Data;
 using ListOfHotels_Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -42,8 +43,10 @@ finally
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
