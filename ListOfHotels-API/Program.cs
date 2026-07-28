@@ -1,4 +1,6 @@
-﻿using ListOfHotels_Data.Data;
+﻿using ListOfHotels_Core.Interfaces;
+using ListOfHotels_Data.Data;
+using ListOfHotels_Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -6,9 +8,6 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddDbContext<AppDbContext>(options=>
-options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 
 //******1- تنظیمات Serilog ********
 #region Serilog Setting
@@ -37,7 +36,14 @@ finally
 }
 
 #endregion
-// Add services to the container.
+
+
+//database
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,7 +52,6 @@ builder.Services.AddEndpointsApiExplorer();
 
 //********4 فعال‌سازی CORS برای دسترسی از دامنه‌های دیگر (فقط برای توسعه)
 // اجازه می‌ده برنامه‌های دیگر (مثل React یا Vue) به این API وصل بشن.
-
 
 builder.Services.AddCors(o =>
 {
